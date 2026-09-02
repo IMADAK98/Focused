@@ -1,0 +1,32 @@
+{
+  "focusArea": "sleep_morning",
+  "directionChoices": [
+    "Wake up with more energy",
+    "Stop hitting snooze repeatedly",
+    "Have a calmer, less rushed start to the day"
+  ],
+  "successCriteriaChoices": [
+    "Out of bed within 10 minutes of the first alarm",
+    "No phone scrolling before getting out of bed",
+    "Leave the house feeling unrushed"
+  ],
+  "intakeData": {
+    "selectedHabits": [
+      "Hit snooze multiple times",
+      "Check phone immediately after waking",
+      "Decide what to wear at the last minute",
+      "Skip breakfast most days"
+    ],
+    "environmentalCues": [
+      "Phone alarm is within arm's reach",
+      "Room stays dark until curtains are opened",
+      "Clothes are not laid out the night before"
+    ],
+    "failurePoints": [
+      "Falling back asleep after snoozing",
+      "Losing time scrolling social media in bed",
+      "Rushing out the door without breakfast"
+    ],
+    "customNotes": "Mornings feel worse on days I go to bed late the night before."
+  }
+}

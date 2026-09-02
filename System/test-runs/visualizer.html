@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Loop Visualizer (test harness)</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, Segoe UI, sans-serif;
+    background: #f4f4f5;
+    margin: 0;
+    padding: 1.5rem;
+    color: #1a1a1a;
+  }
+  h1 { font-size: 1.15rem; margin: 0 0 0.25rem; }
+  .sub { color: #666; font-size: 0.85rem; margin-bottom: 1rem; }
+  .panel {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  textarea {
+    width: 100%;
+    height: 140px;
+    font-family: Consolas, monospace;
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
+  button {
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    margin-right: 0.5rem;
+  }
+  button.secondary { background: #666; }
+  .flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+  }
+  .stage {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fafafa;
+    padding: 0.6rem 0.75rem;
+    width: 190px;
+    cursor: grab;
+    font-size: 0.8rem;
+    position: relative;
+  }
+  .stage.dragging { opacity: 0.4; }
+  .stage.bottleneck { border-color: #d9534f; background: #fff5f5; }
+  .stage .pos {
+    font-size: 0.7rem;
+    color: #888;
+    margin-bottom: 0.25rem;
+  }
+  .stage .title { font-weight: 600; margin-bottom: 0.35rem; }
+  .stage .field { font-size: 0.72rem; color: #444; margin-top: 0.2rem; }
+  .stage .field b { color: #222; }
+  .stage .bn-toggle {
+    margin-top: 0.4rem;
+    font-size: 0.7rem;
+    background: none;
+    border: 1px solid #999;
+    color: #333;
+    padding: 0.15rem 0.4rem;
+  }
+  .stage.bottleneck .bn-toggle { border-color: #d9534f; color: #d9534f; }
+  .arrow { align-self: center; color: #999; font-size: 1.1rem; }
+  .gap { display: flex; align-items: center; }
+  .add-btn {
+    background: none;
+    border: 1px dashed #aaa;
+    color: #888;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 0.8rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+  }
+  .add-btn:hover { border-color: #333; color: #333; }
+  .del-btn {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 0;
+  }
+  .del-btn:hover { color: #d9534f; }
+  .meta { font-size: 0.8rem; color: #444; margin-top: 0.5rem; }
+</style>
+</head>
+<body>
+
+<h1>Loop Visualizer — test harness</h1>
+<p class="sub">Not the product UI. Paste a Phase 1 (<code>asIsLoop</code>) or Phase 2 (<code>toBeLoop</code>) response, or load a file, to see it as draggable blocks and calibrate the bottleneck.</p>
+
+<div class="panel">
+  <textarea id="input" placeholder="Paste JSON here (asIsLoop or toBeLoop response)..."></textarea><br /><br />
+  <input type="file" id="fileInput" accept="application/json" />
+  <button onclick="renderFromTextarea()">Render</button>
+  <button class="secondary" onclick="loadSample()">Load sample</button>
+</div>
+
+<div class="panel">
+  <div id="flow" class="flow"></div>
+  <div id="meta" class="meta"></div>
+</div>
+
+<div class="panel">
+  <button onclick="exportJson()">Export corrected JSON</button>
+  <button class="secondary" onclick="copyExport()">Copy</button>
+  <pre id="exportOut" style="font-size:0.75rem; background:#f7f7f7; padding:0.5rem; border-radius:6px; overflow:auto;"></pre>
+</div>
+
+<script>
+let stages = [];
+let bottleneckIndex = null;
+let dragSrcIndex = null;
+
+function loadSample() {
+  const sample = {
+    asIsLoop: {
+      stages: [
+        { position: 0, title: "Alarm goes off", cue: "Phone alarm sound", environment: "In bed, room still dark", currentFriction: null },
+        { position: 1, title: "Snooze the alarm", cue: "Alarm within arm's reach", environment: "In bed", currentFriction: "Presses snooze multiple times before getting up" },
+        { position: 2, title: "Check phone in bed", cue: "Phone already in hand after snoozing", environment: "In bed, room dark", currentFriction: "Loses track of time scrolling" },
+        { position: 3, title: "Get out of bed", cue: "Running out of buffer time", environment: "Bedroom", currentFriction: null },
+        { position: 4, title: "Decide what to wear", cue: "Standing in front of closet", environment: "Bedroom, no clothes prepared", currentFriction: "Takes long deciding last minute" },
+        { position: 5, title: "Leave without breakfast", cue: "Already running late", environment: "Kitchen / front door", currentFriction: "Skips eating to save time" }
+      ],
+      candidateBottleneckIndex: 2,
+      primaryFrictionAnalysis: "Scrolling on the phone immediately after snoozing consumes the most buffer time and delays every step that follows."
+    }
+  };
+  document.getElementById('input').value = JSON.stringify(sample, null, 2);
+  renderFromTextarea();
+}
+
+document.getElementById('fileInput').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (evt) => {
+    document.getElementById('input').value = evt.target.result;
+    renderFromTextarea();
+  };
+  reader.readAsText(file);
+});
+
+function renderFromTextarea() {
+  let data;
+  try {
+    data = JSON.parse(document.getElementById('input').value);
+  } catch (e) {
+    alert('Invalid JSON: ' + e.message);
+    return;
+  }
+
+  const loop = data.asIsLoop || data.toBeLoop || data;
+  stages = (loop.stages || []).map(s => ({ ...s }));
+  bottleneckIndex = firstDefined(
+    loop.candidateBottleneckIndex,
+    loop.bottleneckStageIndex,
+    data.confirmedBottleneckIndex
+  );
+
+  const metaBits = [];
+  if (loop.primaryFrictionAnalysis) metaBits.push('Friction analysis: ' + loop.primaryFrictionAnalysis);
+  if (loop.coreStrategy) metaBits.push('Core strategy: ' + loop.coreStrategy);
+  if (data.outcome && data.outcome.statement) metaBits.push('Outcome: ' + data.outcome.statement);
+  document.getElementById('meta').textContent = metaBits.join(' | ');
+
+  render();
+}
+
+function firstDefined(...vals) {
+  for (const v of vals) if (v !== undefined && v !== null) return v;
+  return null;
+}
+
+function render() {
+  const flow = document.getElementById('flow');
+  flow.innerHTML = '';
+
+  flow.appendChild(makeAddGap(0));
+
+  stages.forEach((s, i) => {
+    const block = document.createElement('div');
+    block.className = 'stage' + (i === bottleneckIndex ? ' bottleneck' : '');
+    block.draggable = true;
+    block.dataset.index = i;
+
+    block.innerHTML = `
+      <button class="del-btn" onclick="deleteStage(${i})" title="Remove stage">×</button>
+      <div class="pos">#${i}</div>
+      <div class="title">${escapeHtml(s.title || '(untitled)')}</div>
+      ${s.cue ? `<div class="field"><b>Cue:</b> ${escapeHtml(s.cue)}</div>` : ''}
+      ${s.environment ? `<div class="field"><b>Env:</b> ${escapeHtml(s.environment)}</div>` : ''}
+      ${s.currentFriction ? `<div class="field"><b>Friction:</b> ${escapeHtml(s.currentFriction)}</div>` : ''}
+      ${s.redesignIntervention ? `<div class="field"><b>Fix:</b> ${escapeHtml(s.redesignIntervention)}</div>` : ''}
+      <button class="bn-toggle" onclick="toggleBottleneck(${i})">${i === bottleneckIndex ? '★ bottleneck' : 'mark bottleneck'}</button>
+    `;
+
+    block.addEventListener('dragstart', () => { dragSrcIndex = i; block.classList.add('dragging'); });
+    block.addEventListener('dragend', () => block.classList.remove('dragging'));
+    block.addEventListener('dragover', (e) => e.preventDefault());
+    block.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const targetIndex = i;
+      if (dragSrcIndex === null || dragSrcIndex === targetIndex) return;
+      const moved = stages.splice(dragSrcIndex, 1)[0];
+      stages.splice(targetIndex, 0, moved);
+      if (bottleneckIndex === dragSrcIndex) bottleneckIndex = targetIndex;
+      renumber();
+      render();
+    });
+
+    flow.appendChild(block);
+    flow.appendChild(makeAddGap(i + 1));
+  });
+}
+
+function makeAddGap(insertAt) {
+  const gap = document.createElement('div');
+  gap.className = 'gap';
+  gap.innerHTML = `<button class="add-btn" title="Insert stage here" onclick="addStageAt(${insertAt})">+</button>`;
+  return gap;
+}
+
+function addStageAt(insertAt) {
+  const title = prompt('New stage title:');
+  if (!title) return;
+  const cue = prompt('Cue (optional):') || null;
+  const environment = prompt('Environment (optional):') || null;
+  const newStage = { title, cue, environment };
+  stages.splice(insertAt, 0, newStage);
+  if (bottleneckIndex !== null && insertAt <= bottleneckIndex) bottleneckIndex++;
+  renumber();
+  render();
+}
+
+function deleteStage(i) {
+  if (!confirm('Remove stage "' + (stages[i].title || '') + '"?')) return;
+  stages.splice(i, 1);
+  if (bottleneckIndex === i) bottleneckIndex = null;
+  else if (bottleneckIndex !== null && bottleneckIndex > i) bottleneckIndex--;
+  renumber();
+  render();
+}
+
+function toggleBottleneck(i) {
+  bottleneckIndex = (bottleneckIndex === i) ? null : i;
+  render();
+}
+
+function renumber() {
+  stages.forEach((s, i) => s.position = i);
+}
+
+function exportJson() {
+  renumber();
+  const out = {
+    confirmedAsIsLoop: { stages },
+    confirmedBottleneckIndex: bottleneckIndex
+  };
+  document.getElementById('exportOut').textContent = JSON.stringify(out, null, 2);
+}
+
+function copyExport() {
+  const text = document.getElementById('exportOut').textContent;
+  if (!text) { exportJson(); }
+  navigator.clipboard.writeText(document.getElementById('exportOut').textContent);
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+</script>
+</body>
+</html>

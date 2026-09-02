@@ -1,0 +1,23 @@
+{
+  "confirmedAsIsLoop": {
+    "stages": [
+      { "position": 0, "title": "Finish work", "cue": "Meetings and tasks wind down", "environment": "Office or home desk", "currentFriction": "Meetings sometimes run late" },
+      { "position": 1, "title": "Leave work", "cue": "Work day considered done", "environment": "Office or home desk", "currentFriction": null },
+      { "position": 2, "title": "Commute home", "cue": "Default route taken", "environment": "Car / commute, gym bag in the car", "currentFriction": null },
+      { "position": 3, "title": "Arrive home", "cue": "Front door", "environment": "Home living room, couch visible", "currentFriction": "Couch and TV are the first thing seen" },
+      { "position": 4, "title": "Decide whether to train", "cue": "Already sitting down at home", "environment": "Home living room", "currentFriction": "Decides to skip once seated" },
+      { "position": 5, "title": "Eat dinner", "cue": "Decided not to train", "environment": "Kitchen", "currentFriction": null }
+    ]
+  },
+  "confirmedBottleneckIndex": 4,
+  "directionChoices": [
+    "Train consistently after work",
+    "Build strength without burning out",
+    "Stop skipping planned gym days"
+  ],
+  "successCriteriaChoices": [
+    "Go to the gym at least 3x per week",
+    "Don't skip two planned sessions in a row",
+    "Feel recovered, not wrecked, the next morning"
+  ]
+}

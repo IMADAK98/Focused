@@ -1,0 +1,23 @@
+{
+  "confirmedAsIsLoop": {
+    "stages": [
+      { "position": 0, "title": "Alarm goes off", "cue": "Phone alarm sound", "environment": "In bed, room still dark", "currentFriction": null },
+      { "position": 1, "title": "Snooze the alarm", "cue": "Alarm within arm's reach", "environment": "In bed", "currentFriction": "Presses snooze multiple times before getting up" },
+      { "position": 2, "title": "Check phone in bed", "cue": "Phone already in hand after snoozing", "environment": "In bed, room dark", "currentFriction": "Loses track of time scrolling" },
+      { "position": 3, "title": "Get out of bed", "cue": "Running out of buffer time", "environment": "Bedroom", "currentFriction": null },
+      { "position": 4, "title": "Decide what to wear", "cue": "Standing in front of closet", "environment": "Bedroom, no clothes prepared", "currentFriction": "Takes long deciding last minute" },
+      { "position": 5, "title": "Leave without breakfast", "cue": "Already running late", "environment": "Kitchen / front door", "currentFriction": "Skips eating to save time" }
+    ]
+  },
+  "confirmedBottleneckIndex": 2,
+  "directionChoices": [
+    "Wake up with more energy",
+    "Stop hitting snooze repeatedly",
+    "Have a calmer, less rushed start to the day"
+  ],
+  "successCriteriaChoices": [
+    "Out of bed within 10 minutes of the first alarm",
+    "No phone scrolling before getting out of bed",
+    "Leave the house feeling unrushed"
+  ]
+}

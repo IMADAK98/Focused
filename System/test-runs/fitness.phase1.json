@@ -1,0 +1,35 @@
+{
+  "focusArea": "fitness",
+  "directionChoices": [
+    "Train consistently after work",
+    "Build strength without burning out",
+    "Stop skipping planned gym days"
+  ],
+  "successCriteriaChoices": [
+    "Go to the gym at least 3x per week",
+    "Don't skip two planned sessions in a row",
+    "Feel recovered, not wrecked, the next morning"
+  ],
+  "intakeData": {
+    "selectedHabits": [
+      "Go straight home after work instead of the gym",
+      "Decide whether to train after sitting down at home",
+      "Eat dinner before deciding on training",
+      "Leave gym bag in the car",
+      "No fixed pre-workout snack or fueling routine"
+    ],
+    "environmentalCues": [
+      "Gym is out of the way from the direct route home",
+      "Work laptop stays open into the evening",
+      "Couch and TV are the first thing seen at home",
+      "Kitchen is the first stop when hungry after work"
+    ],
+    "failurePoints": [
+      "Decides to skip once sitting on the couch",
+      "Overtime or late meetings running past planned leave time",
+      "Trains on an empty stomach or skips training because too hungry",
+      "Eats a full dinner right after arriving home, discouraging training afterward"
+    ],
+    "customNotes": "Weekends have more free time but no fixed schedule at all."
+  }
+}

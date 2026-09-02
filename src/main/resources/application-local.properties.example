@@ -1,0 +1,2 @@
+spring.ai.google.genai.api-key=your-google-genai-api-key
+spring.datasource.password=your-db-password
