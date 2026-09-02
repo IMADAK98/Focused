@@ -10,6 +10,7 @@ import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.ai.template.st.StTemplateRenderer;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.Map;
  * (invariants.md #25, #36). Runs only after Human Calibration.
  */
 @Service
+@ConditionalOnProperty(name = "focused.ai.enabled", havingValue = "true")
 public class RedesignServiceImpl implements RedesignService {
 
     private final ChatClient chatClient;

@@ -1,2 +1,4 @@
 spring.ai.google.genai.api-key=your-google-genai-api-key
+# focused.ai.enabled=true
+# Use profile `postgres` when a live database is available.
 spring.datasource.password=your-db-password

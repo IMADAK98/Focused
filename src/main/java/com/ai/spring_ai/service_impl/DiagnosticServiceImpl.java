@@ -10,6 +10,7 @@ import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.ai.template.st.StTemplateRenderer;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.Map;
  * bottleneck. Diagnosis only; no fixes (invariants.md #36).
  */
 @Service
+@ConditionalOnProperty(name = "focused.ai.enabled", havingValue = "true")
 public class DiagnosticServiceImpl implements DiagnosticService {
 
     private final ChatClient chatClient;
