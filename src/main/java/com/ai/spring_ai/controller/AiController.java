@@ -4,6 +4,7 @@ import com.ai.spring_ai.dto.TestOutput;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@ConditionalOnProperty(name = "focused.ai.enabled", havingValue = "true")
 public class AiController {
 
     private final ChatModel chatModel;
