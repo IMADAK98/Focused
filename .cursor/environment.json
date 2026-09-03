@@ -1,0 +1,12 @@
+{
+  "name": "Focused (Spring AI + Postgres)",
+  "install": "bash .cursor/install.sh",
+  "start": "bash .cursor/start.sh",
+  "terminals": [
+    {
+      "name": "app",
+      "command": "cd /workspace && ./mvnw -B -ntp -DskipTests spring-boot:run"
+    }
+  ],
+  "ports": [8080]
+}
