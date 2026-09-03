@@ -1,13 +1,12 @@
 package com.ai.spring_ai.ai;
 
-import com.ai.spring_ai.dto.AsIsStage;
-import com.ai.spring_ai.dto.ConfirmedAsIsLoop;
-import com.ai.spring_ai.dto.Outcome;
-import com.ai.spring_ai.dto.Phase2Request;
-import com.ai.spring_ai.dto.Phase2Response;
-import com.ai.spring_ai.dto.ToBeLoop;
-import com.ai.spring_ai.dto.ToBeStage;
-import com.ai.spring_ai.service.RedesignService;
+import com.ai.spring_ai.dto.ai.AsIsStage;
+import com.ai.spring_ai.dto.ai.ConfirmedAsIsLoop;
+import com.ai.spring_ai.dto.ai.Outcome;
+import com.ai.spring_ai.dto.ai.Phase2Request;
+import com.ai.spring_ai.dto.ai.Phase2Response;
+import com.ai.spring_ai.dto.ai.ToBeLoop;
+import com.ai.spring_ai.dto.ai.ToBeStage;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 

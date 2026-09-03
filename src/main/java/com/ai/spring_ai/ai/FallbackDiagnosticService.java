@@ -1,11 +1,10 @@
 package com.ai.spring_ai.ai;
 
-import com.ai.spring_ai.dto.AsIsLoop;
-import com.ai.spring_ai.dto.AsIsStage;
-import com.ai.spring_ai.dto.IntakeData;
-import com.ai.spring_ai.dto.Phase1Request;
-import com.ai.spring_ai.dto.Phase1Response;
-import com.ai.spring_ai.service.DiagnosticService;
+import com.ai.spring_ai.dto.ai.AsIsLoop;
+import com.ai.spring_ai.dto.ai.AsIsStage;
+import com.ai.spring_ai.dto.ai.IntakeData;
+import com.ai.spring_ai.dto.ai.Phase1Request;
+import com.ai.spring_ai.dto.ai.Phase1Response;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
