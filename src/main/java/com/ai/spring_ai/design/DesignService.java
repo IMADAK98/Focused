@@ -1,15 +1,16 @@
 package com.ai.spring_ai.design;
 
-import com.ai.spring_ai.ai.DraftMapper;
-import com.ai.spring_ai.dto.ConfirmedAsIsLoop;
-import com.ai.spring_ai.dto.Phase1Request;
-import com.ai.spring_ai.dto.Phase1Response;
-import com.ai.spring_ai.dto.Phase2Request;
-import com.ai.spring_ai.dto.Phase2Response;
+import com.ai.spring_ai.mapper.design.DraftMapper;
+import com.ai.spring_ai.dto.ai.ConfirmedAsIsLoop;
+import com.ai.spring_ai.dto.ai.Phase1Request;
+import com.ai.spring_ai.dto.ai.Phase1Response;
+import com.ai.spring_ai.dto.ai.Phase2Request;
+import com.ai.spring_ai.dto.ai.Phase2Response;
 import com.ai.spring_ai.identity.IdentityService;
+import com.ai.spring_ai.repository.design.InMemoryFocusAreaStore;
 import com.ai.spring_ai.run.RunService;
-import com.ai.spring_ai.service.DiagnosticService;
-import com.ai.spring_ai.service.RedesignService;
+import com.ai.spring_ai.ai.DiagnosticService;
+import com.ai.spring_ai.ai.RedesignService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

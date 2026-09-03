@@ -1,6 +1,6 @@
 package com.ai.spring_ai.controller;
 
-import com.ai.spring_ai.dto.TestOutput;
+import com.ai.spring_ai.dto.ai.TestOutput;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.core.ParameterizedTypeReference;

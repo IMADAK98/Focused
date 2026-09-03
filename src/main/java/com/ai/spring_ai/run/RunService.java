@@ -1,7 +1,7 @@
 package com.ai.spring_ai.run;
 
 import com.ai.spring_ai.design.FocusArea;
-import com.ai.spring_ai.design.InMemoryFocusAreaStore;
+import com.ai.spring_ai.repository.design.InMemoryFocusAreaStore;
 import com.ai.spring_ai.design.PipelineStatus;
 import org.springframework.stereotype.Service;
 
