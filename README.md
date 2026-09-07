@@ -32,6 +32,7 @@ Do not enable `focused.ai.enabled` without a real key. Controllers never call th
 |--------|------|---------|
 | GET | `/api/v1/me` | Stub User (no auth) |
 | GET | `/api/v1/focus-area-catalog` | Catalog for FocusArea screen |
+| GET | `/api/v1/intake-chip-catalog?focusAreaCatalogId={id}&kind={kind}` | Intake chip catalog (e.g. `morning-energy` + `whats_not_working`) |
 | GET | `/api/v1/focus-areas` | List sessions |
 | POST | `/api/v1/focus-areas` | Create FocusArea session |
 | GET | `/api/v1/focus-areas/{id}` | Full aggregate |

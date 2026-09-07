@@ -4,6 +4,7 @@ import com.ai.spring_ai.model.AsIsLoop;
 import com.ai.spring_ai.service_impl.DesignService;
 import com.ai.spring_ai.dto.design.CalibrationRequest;
 import com.ai.spring_ai.dto.design.CreateFocusAreaRequest;
+import com.ai.spring_ai.dto.design.IntakeChipCatalogItem;
 import com.ai.spring_ai.dto.design.ToBeUpdateRequest;
 import com.ai.spring_ai.model.FocusArea;
 import com.ai.spring_ai.model.FocusAreaCatalogItem;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -35,6 +37,20 @@ public class FocusAreaController {
     @Operation(summary = "FocusArea catalog for screen 1")
     public List<FocusAreaCatalogItem> catalog() {
         return designService.catalog();
+    }
+
+    @GetMapping("/intake-chip-catalog")
+    @Operation(summary = "Intake chip catalog for a FocusArea catalog entry and intake kind")
+    public List<IntakeChipCatalogItem> intakeChipCatalog(
+            @RequestParam String focusAreaCatalogId,
+            @RequestParam String kind) {
+        if (focusAreaCatalogId == null || focusAreaCatalogId.isBlank()) {
+            throw new IllegalArgumentException("focusAreaCatalogId is required");
+        }
+        if (kind == null || kind.isBlank()) {
+            throw new IllegalArgumentException("kind is required");
+        }
+        return designService.intakeChipCatalog(focusAreaCatalogId, kind);
     }
 
     @GetMapping("/focus-areas")
