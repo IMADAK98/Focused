@@ -1,7 +1,7 @@
 package com.ai.spring_ai.controller;
 
-import com.ai.spring_ai.identity.IdentityService;
-import com.ai.spring_ai.identity.User;
+import com.ai.spring_ai.service_impl.IdentityService;
+import com.ai.spring_ai.model.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
