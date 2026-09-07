@@ -79,7 +79,7 @@ public class FocusAreaController {
     }
 
     @PutMapping("/focus-areas/{id}/intake")
-    @Operation(summary = "Submit or update Intake")
+    @Operation(summary = "Submit or update Intake", description = "When chips are present, require 1–5 selected whats_not_working chips with catalog ids.")
     public FocusArea saveIntake(@PathVariable String id, @RequestBody Intake intake) {
         return designService.saveIntake(id, intake);
     }
