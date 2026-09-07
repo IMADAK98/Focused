@@ -164,7 +164,25 @@ class IntakeChipCatalogTest {
                                     {"id":"waking_up_groggy","text":"Waking up groggy","selected":true},
                                     {"id":"phone_first_thing","text":"Phone first thing","selected":true},
                                     {"id":"scattered_mornings","text":"Scattered mornings","selected":true},
-                                    {"id":"no_breakfast_routine","text":"No breakfast routine","selected":true}
+                                    {"id":"no_breakfast_routine","text":"No breakfast routine","selected":true},
+                                    {"id":"late_to_meetings","text":"Late to meetings","selected":true}
+                                  ]
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("AS_IS"));
+
+        mockMvc.perform(put("/api/v1/focus-areas/" + id + "/intake")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "chips": [
+                                    {"id":"waking_up_groggy","text":"Waking up groggy","selected":true},
+                                    {"id":"phone_first_thing","text":"Phone first thing","selected":true},
+                                    {"id":"scattered_mornings","text":"Scattered mornings","selected":true},
+                                    {"id":"no_breakfast_routine","text":"No breakfast routine","selected":true},
+                                    {"id":"late_to_meetings","text":"Late to meetings","selected":true},
+                                    {"id":"inconsistent_wake_time","text":"Inconsistent wake time","selected":true}
                                   ]
                                 }
                                 """))

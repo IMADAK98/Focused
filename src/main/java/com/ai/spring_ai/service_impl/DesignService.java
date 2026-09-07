@@ -188,10 +188,10 @@ public class DesignService {
         }
         List<IntakeChip> selected = intake.chips().stream().filter(IntakeChip::selected).toList();
         if (selected.size() < 1) {
-            throw new IllegalArgumentException("Select at least 1 intake chip (max 3)");
+            throw new IllegalArgumentException("Select at least 1 intake chip (max 5)");
         }
-        if (selected.size() > 3) {
-            throw new IllegalArgumentException("Select at most 3 intake chips");
+        if (selected.size() > 5) {
+            throw new IllegalArgumentException("Select at most 5 intake chips");
         }
         String focusAreaCatalogId = resolveFocusAreaCatalogId(focusArea);
         if (focusAreaCatalogId == null) {

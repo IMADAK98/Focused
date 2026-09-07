@@ -36,7 +36,7 @@ Do not enable `focused.ai.enabled` without a real key. Controllers never call th
 | GET | `/api/v1/focus-areas` | List sessions |
 | POST | `/api/v1/focus-areas` | Create FocusArea session |
 | GET | `/api/v1/focus-areas/{id}` | Full aggregate |
-| GET/PUT | `/api/v1/focus-areas/{id}/intake` | Get / submit Intake |
+| GET/PUT | `/api/v1/focus-areas/{id}/intake` | Get / submit Intake (chips: 1–5 selected `whats_not_working`) |
 | GET/PUT | `/api/v1/focus-areas/{id}/as-is` | Get / save As-Is Stages |
 | POST | `/api/v1/focus-areas/{id}/as-is/draft` | AI As-Is draft (candidate Bottleneck only) |
 | GET/POST | `/api/v1/focus-areas/{id}/calibration` | Human Calibration — confirm Bottleneck |
