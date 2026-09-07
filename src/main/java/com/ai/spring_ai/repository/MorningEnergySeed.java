@@ -48,11 +48,11 @@ final class MorningEnergySeed {
                         "Rushing out the door without breakfast"),
                 "Mornings feel worse on days I go to bed late the night before.",
                 List.of(
-                        new IntakeChip("1", "Waking up groggy", true),
-                        new IntakeChip("2", "Scattered mornings", true),
-                        new IntakeChip("3", "Phone first thing", true),
-                        new IntakeChip("4", "No breakfast routine", false),
-                        new IntakeChip("5", "Late to meetings", false)));
+                        new IntakeChip("waking_up_groggy", "Waking up groggy", true),
+                        new IntakeChip("scattered_mornings", "Scattered mornings", true),
+                        new IntakeChip("phone_first_thing", "Phone first thing", true),
+                        new IntakeChip("no_breakfast_routine", "No breakfast routine", false),
+                        new IntakeChip("late_to_meetings", "Late to meetings", false)));
 
         AsIsLoop asIsLoop = new AsIsLoop(
                 List.of(

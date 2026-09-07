@@ -1,5 +1,6 @@
 package com.ai.spring_ai.service_impl;
 
+import com.ai.spring_ai.dto.design.IntakeChipCatalogItem;
 import com.ai.spring_ai.dto.ai.ConfirmedAsIsLoop;
 import com.ai.spring_ai.dto.ai.Phase1Request;
 import com.ai.spring_ai.dto.ai.Phase1Response;
@@ -59,6 +60,10 @@ public class DesignService {
         return CATALOG;
     }
 
+    public List<IntakeChipCatalogItem> intakeChipCatalog(String focusAreaCatalogId, String kind) {
+        return IntakeChipCatalog.find(focusAreaCatalogId, kind);
+    }
+
     public List<FocusArea> list() {
         return store.findByUser(identityService.currentUser().id());
     }
@@ -86,6 +91,7 @@ public class DesignService {
 
     public FocusArea saveIntake(String focusAreaId, Intake intake) {
         FocusArea focusArea = store.require(focusAreaId);
+        validateIntakeChips(focusArea, intake);
         PipelineStatus status = focusArea.status() == PipelineStatus.INTAKE ? PipelineStatus.AS_IS : focusArea.status();
         return store.save(focusArea.withIntake(intake).withStatus(status));
     }
@@ -174,6 +180,40 @@ public class DesignService {
             return store.save(focusArea.withStatus(PipelineStatus.RUN));
         }
         return store.save(focusArea.withRun(runService.createEmptyRun(focusArea.toBeLoop().id()), PipelineStatus.RUN));
+    }
+
+    private void validateIntakeChips(FocusArea focusArea, Intake intake) {
+        if (intake.chips().isEmpty()) {
+            return;
+        }
+        List<IntakeChip> selected = intake.chips().stream().filter(IntakeChip::selected).toList();
+        if (selected.size() < 1) {
+            throw new IllegalArgumentException("Select at least 1 intake chip (max 3)");
+        }
+        if (selected.size() > 3) {
+            throw new IllegalArgumentException("Select at most 3 intake chips");
+        }
+        String focusAreaCatalogId = resolveFocusAreaCatalogId(focusArea);
+        if (focusAreaCatalogId == null) {
+            throw new IllegalArgumentException("Intake chips are not supported for this FocusArea catalog");
+        }
+        for (IntakeChip chip : selected) {
+            if (chip.id() == null || chip.id().isBlank()) {
+                throw new IllegalArgumentException("Each selected intake chip must have an id");
+            }
+            if (!IntakeChipCatalog.contains(focusAreaCatalogId, "whats_not_working", chip.id())) {
+                throw new IllegalArgumentException("Unknown intake chip id: " + chip.id());
+            }
+        }
+    }
+
+    private static String resolveFocusAreaCatalogId(FocusArea focusArea) {
+        return CATALOG.stream()
+                .filter(item -> item.name().equals(focusArea.name())
+                        && java.util.Objects.equals(item.description(), focusArea.description()))
+                .map(FocusAreaCatalogItem::id)
+                .findFirst()
+                .orElse(null);
     }
 
     private FocusAreaCatalogItem resolveCatalog(String catalogId, String name, String description) {
