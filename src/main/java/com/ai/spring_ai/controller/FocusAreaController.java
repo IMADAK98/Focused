@@ -1,13 +1,13 @@
 package com.ai.spring_ai.controller;
 
-import com.ai.spring_ai.design.AsIsLoop;
-import com.ai.spring_ai.design.DesignService;
+import com.ai.spring_ai.model.AsIsLoop;
+import com.ai.spring_ai.service_impl.DesignService;
 import com.ai.spring_ai.dto.design.CalibrationRequest;
 import com.ai.spring_ai.dto.design.CreateFocusAreaRequest;
 import com.ai.spring_ai.dto.design.ToBeUpdateRequest;
-import com.ai.spring_ai.design.FocusArea;
-import com.ai.spring_ai.design.FocusAreaCatalogItem;
-import com.ai.spring_ai.design.Intake;
+import com.ai.spring_ai.model.FocusArea;
+import com.ai.spring_ai.model.FocusAreaCatalogItem;
+import com.ai.spring_ai.model.Intake;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;

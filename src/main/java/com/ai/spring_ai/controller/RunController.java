@@ -1,8 +1,8 @@
 package com.ai.spring_ai.controller;
 
 import com.ai.spring_ai.dto.run.CheckInRequest;
-import com.ai.spring_ai.run.Run;
-import com.ai.spring_ai.run.RunService;
+import com.ai.spring_ai.model.Run;
+import com.ai.spring_ai.service_impl.RunService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
